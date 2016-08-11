@@ -5,7 +5,7 @@ import java.util.List;
 class Rummy extends Game{
 
     private  List<Card> handCards;
-    private int jokerCount=0;
+    private int numOfJokers=0;
     public static List<Integer> getFaceValues(List<Card> cards) {
         List<Integer> values = new ArrayList<Integer>();
         for (Card card : cards) {
@@ -17,28 +17,21 @@ class Rummy extends Game{
     public Rummy(List<Card> cards)
     {
         this.handCards=cards;
-        this.jokerCount=numOfJokers();
+        this.numOfJokers=removeJokers();
     }
 
     public static boolean areSequential(List<Card> cards) {
-        int numOfJokers = 0;
+      //  int numOfJokers = 0;
         List<Integer> values = getFaceValues(cards);
         Collections.sort(values);
-        if (values.get(0) == -1)
-            numOfJokers++;
         for (int i = 0; i < values.size() - 1; i++) {
-            if (values.get(i + 1) == -1)
-                numOfJokers++;
             if (values.get(i + 1) - values.get(i) != 1)
-                if (numOfJokers > 0)
-                    numOfJokers--;
-                else
                     return false;
         }
         return true;
     }
 
-    public  int numOfJokers(){
+    public  int removeJokers(){
         int numOfJokers = 0;
         List<Card.Suit> suits = CardUtils.getSuitValues(this.handCards);
 
