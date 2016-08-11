@@ -1,32 +1,62 @@
-//import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+class Rummy extends Game{
+
+    private  List<Card> handCards;
+    private int jokerCount=0;
+    public static List<Integer> getFaceValues(List<Card> cards) {
+        List<Integer> values = new ArrayList<Integer>();
+        for (Card card : cards) {
+            values.add(card.getFaceValue());
+        }
+        return values;
+    }
+
+    public Rummy(List<Card> cards)
+    {
+        this.handCards=cards;
+        this.jokerCount=numOfJokers();
+    }
+
+    public static boolean areSequential(List<Card> cards) {
+        int numOfJokers = 0;
+        List<Integer> values = getFaceValues(cards);
+        Collections.sort(values);
+        if (values.get(0) == -1)
+            numOfJokers++;
+        for (int i = 0; i < values.size() - 1; i++) {
+            if (values.get(i + 1) == -1)
+                numOfJokers++;
+            if (values.get(i + 1) - values.get(i) != 1)
+                if (numOfJokers > 0)
+                    numOfJokers--;
+                else
+                    return false;
+        }
+        return true;
+    }
+
+    public  int numOfJokers(){
+        int numOfJokers = 0;
+        List<Card.Suit> suits = CardUtils.getSuitValues(this.handCards);
+
+        for (int i = 0; i < suits.size(); i++)
+        {
+            if(suits.get(i)== Card.Suit.JOKER)
+            {
+                numOfJokers++;
+                suits.remove(i);
+            }
+        }
+
+        return numOfJokers;
+
+    }
 //
-//class Rummy extends Game {
-//
-//
-//	public Rummy(int joker) {
-//		this.numberOfCards=13;
-//		deck = new Deck(1);
-//		deck.shuffle();
-//		hand = new Hand(deck,numberOfCards);
-//		this.numberOfCards = numberOfCards;
-//	}
-//
-//	@Override
-//	void evaluate(Hand hand) {
-//		CardUtils.sortCardsOnSuite(hand);
-//		for(int i=0;i<hand.hand.size();i++) {
-//			System.out.println(hand.hand.get(i).toString());
-//		}
-//
-//	}
-//
-//	public static void debug() {
-//		Rummy r = new Rummy(0);
-//		r.evaluate(r.hand);
-//	}
-//
-//	public static void main(String[] args) {
-//		debug();
-//	}
-//
-//}
+//    int evaluateRummy(List<Card> cards) {
+//        int neededCards=0;
+//        return neededCards;
+//    }
+}
