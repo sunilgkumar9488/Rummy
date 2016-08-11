@@ -14,10 +14,11 @@ class Rummy extends Game{
         return values;
     }
 
-    public Rummy(List<Card> cards)
+    public Rummy(List<Card> cards,Card jokerCard)
     {
+        int jokerFaceValue=jokerCard.getFaceValue();
         this.handCards=cards;
-        this.numOfJokers=removeJokers();
+        this.numOfJokers=removeJokers(jokerFaceValue);
     }
 
     public static boolean areSequential(List<Card> cards) {
@@ -31,16 +32,17 @@ class Rummy extends Game{
         return true;
     }
 
-    public  int removeJokers(){
+    public  int removeJokers(int jokerFaceValue){
         int numOfJokers = 0;
-        List<Card.Suit> suits = CardUtils.getSuitValues(this.handCards);
+        //List<Card.Suit> suits = CardUtils.getSuitValues(this.handCards);
+        List<Integer> faceValues=CardUtils.getFaceValues(this.handCards);
 
-        for (int i = 0; i < suits.size(); i++)
+        for (int i = 0; i < faceValues.size(); i++)
         {
-            if(suits.get(i)== Card.Suit.JOKER)
+            if(faceValues.get(i)== -1 || faceValues.get(i)==jokerFaceValue)
             {
                 numOfJokers++;
-                suits.remove(i);
+                faceValues.remove(i);
             }
         }
 
